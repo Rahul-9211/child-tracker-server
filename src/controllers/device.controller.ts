@@ -3,7 +3,7 @@ import mongoose from 'mongoose';
 import Device, { IDevice } from '../models/device.model';
 import { AuthRequest } from '../middleware/auth.middleware';
 import User from '../models/user.model';
-import { CreateDeviceInput } from '../utils/interface/IDeviceInfo';
+import { CreateDeviceInput } from '../utils/types/IDeviceInfo';
 
 // Get devices based on user role
 export const getAllDevices = async (req: AuthRequest, res: Response) => {

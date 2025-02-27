@@ -109,6 +109,8 @@ cp .env.example .env
 ```env
 PORT=3001
 MONGODB_URI=your_mongodb_uri
+username=user_name
+password=user_password
 JWT_SECRET=your_jwt_secret
 SUPER_ADMIN_ACCESS_CODE=your_access_code
 ```

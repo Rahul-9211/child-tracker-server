@@ -7,7 +7,7 @@ import mongoose from 'mongoose';
 import Device from '../models/device.model';
 import { AuthRequest } from '../middleware/auth.middleware';
 import dotenv from 'dotenv';
-import { SignupRequestBody } from '../utils/interface/ISignUp';
+import { SignupRequestBody } from '../utils/types/ISignUp';
 dotenv.config();
 
 // Helper function to log auth activities
