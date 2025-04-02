@@ -8,12 +8,12 @@ import {
   getApplicationsByCategory,
   deleteApplication
 } from '../controllers/application.controller';
-import { authenticateToken } from '../middleware/auth.middleware';
+import { auth } from '../middleware/auth.middleware';
 
 const router = express.Router();
 
 // All routes require authentication
-router.use(authenticateToken);
+router.use(auth);
 
 // Create new application entry
 router.post('/', createApplication);

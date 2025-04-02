@@ -2,6 +2,7 @@ import express from 'express';
 import deviceRoutes from './device.routes';
 import authRoutes from './auth.routes';
 import smsRoutes from './sms.routes';
+import contactRoutes from './contact.routes';
 
 import locationRoutes from './location.routes';
 
@@ -22,6 +23,8 @@ router.use('/devices', deviceRoutes);
 // SMS routes
 router.use('/sms', smsRoutes);
 
+// Contact routes
+router.use('/contacts', contactRoutes);
 
 // Location routes
 router.use('/locations', locationRoutes);
