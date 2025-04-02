@@ -8,12 +8,12 @@ import {
   getMovementStatus,
   deleteLocations
 } from '../controllers/location.controller';
-import { authenticateToken } from '../middleware/auth.middleware';
+import { auth } from '../middleware/auth.middleware';
 
 const router = express.Router();
 
 // All routes require authentication
-router.use(authenticateToken);
+router.use(auth);
 
 // Create new location entry
 router.post('/', createLocation);

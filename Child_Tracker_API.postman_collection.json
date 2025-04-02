@@ -1,7 +1,7 @@
 {
   "info": {
     "name": "Child Tracker API",
-    "description": "Complete API collection for Child Tracker application",
+    "description": "API collection for Child Tracker Server",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
   },
   "item": [
@@ -12,70 +12,42 @@
           "name": "Sign Up",
           "request": {
             "method": "POST",
-            "header": [
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              }
-            ],
-            "body": {
-              "mode": "raw",
-              "raw": "{\n    \"name\": \"John Doe\",\n    \"email\": \"john@example.com\",\n    \"password\": \"password123\",\n    \"role\": \"admin\",\n    \"deviceId\": \"device123\",\n    \"superAdminKey\": \"your-secret-access-code-123\"\n}"
-            },
+            "header": [],
             "url": {
               "raw": "{{base_url}}/api/auth/signup",
               "host": ["{{base_url}}"],
               "path": ["api", "auth", "signup"]
             },
-            "description": "Register a new user"
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"name\": \"John Doe\",\n    \"email\": \"john@example.com\",\n    \"password\": \"securepassword\",\n    \"role\": \"parent\",\n    \"deviceId\": \"device123\",\n    \"superAdminKey\": \"your-secret-access-code-123\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
           }
         },
         {
           "name": "Sign In",
           "request": {
             "method": "POST",
-            "header": [
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              }
-            ],
-            "body": {
-              "mode": "raw",
-              "raw": "{\n    \"email\": \"john@example.com\",\n    \"password\": \"password123\"\n}"
-            },
+            "header": [],
             "url": {
               "raw": "{{base_url}}/api/auth/signin",
               "host": ["{{base_url}}"],
               "path": ["api", "auth", "signin"]
             },
-            "description": "User login"
-          }
-        },
-        {
-          "name": "Add Device to User",
-          "request": {
-            "method": "POST",
-            "header": [
-              {
-                "key": "Authorization",
-                "value": "Bearer {{auth_token}}"
-              },
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              }
-            ],
             "body": {
               "mode": "raw",
-              "raw": "{\n    \"deviceId\": \"device123\"\n}"
-            },
-            "url": {
-              "raw": "{{base_url}}/api/auth/add-device",
-              "host": ["{{base_url}}"],
-              "path": ["api", "auth", "add-device"]
-            },
-            "description": "Add a device to the authenticated user"
+              "raw": "{\n    \"email\": \"john@example.com\",\n    \"password\": \"securepassword\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
           }
         }
       ]
@@ -84,367 +56,405 @@
       "name": "Device Management",
       "item": [
         {
-          "name": "Create Device",
+          "name": "Register Device",
           "request": {
             "method": "POST",
             "header": [
               {
-                "key": "Content-Type",
-                "value": "application/json"
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
               }
             ],
+            "url": {
+              "raw": "{{base_url}}/api/devices/register",
+              "host": ["{{base_url}}"],
+              "path": ["api", "devices", "register"]
+            },
             "body": {
               "mode": "raw",
-              "raw": "{\n    \"deviceId\": \"device123\",\n    \"deviceName\": \"Child's Tablet\",\n    \"deviceType\": \"Tablet\",\n    \"osVersion\": \"iOS 16\",\n    \"manufacturer\": \"Apple\",\n    \"lastConnected\": \"2024-03-14T12:30:00Z\",\n    \"status\": \"active\",\n    \"childId\": \"child_001\",\n    \"batteryLevel\": 85,\n    \"settings\": {\n        \"screenTimeLimit\": 120,\n        \"geofenceRadius\": 100,\n        \"allowedApps\": [\"Educational Games\", \"Reading Apps\"],\n        \"blockedWebsites\": [\"example.com\", \"socialmedia.com\"]\n    }\n}"
-            },
-            "url": {
-              "raw": "{{base_url}}/api/devices",
-              "host": ["{{base_url}}"],
-              "path": ["api", "devices"]
-            },
-            "description": "Create a new device"
+              "raw": "{\n    \"deviceId\": \"device123\",\n    \"deviceName\": \"Child's Phone\",\n    \"deviceModel\": \"Samsung Galaxy S21\",\n    \"osVersion\": \"Android 12\",\n    \"appVersion\": \"1.0.0\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
           }
         },
         {
-          "name": "Get All Devices",
+          "name": "Get Device Info",
           "request": {
             "method": "GET",
             "header": [
               {
                 "key": "Authorization",
-                "value": "Bearer {{auth_token}}"
-              }
-            ],
-            "url": {
-              "raw": "{{base_url}}/api/devices",
-              "host": ["{{base_url}}"],
-              "path": ["api", "devices"]
-            },
-            "description": "Get all devices (role-based access)"
-          }
-        },
-        {
-          "name": "Get Device by ID",
-          "request": {
-            "method": "GET",
-            "header": [
-              {
-                "key": "Authorization",
-                "value": "Bearer {{auth_token}}"
+                "value": "Bearer {{token}}"
               }
             ],
             "url": {
               "raw": "{{base_url}}/api/devices/{{deviceId}}",
               "host": ["{{base_url}}"],
               "path": ["api", "devices", "{{deviceId}}"]
-            },
-            "description": "Get specific device details"
-          }
-        },
-        {
-          "name": "Update Device",
-          "request": {
-            "method": "PUT",
-            "header": [
-              {
-                "key": "Authorization",
-                "value": "Bearer {{auth_token}}"
-              },
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              }
-            ],
-            "body": {
-              "mode": "raw",
-              "raw": "{\n    \"batteryLevel\": 90,\n    \"status\": \"active\",\n    \"settings\": {\n        \"screenTimeLimit\": 150\n    }\n}"
-            },
-            "url": {
-              "raw": "{{base_url}}/api/devices/{{deviceId}}",
-              "host": ["{{base_url}}"],
-              "path": ["api", "devices", "{{deviceId}}"]
-            },
-            "description": "Update device information"
-          }
-        },
-        {
-          "name": "Delete Device",
-          "request": {
-            "method": "DELETE",
-            "header": [
-              {
-                "key": "Authorization",
-                "value": "Bearer {{auth_token}}"
-              }
-            ],
-            "url": {
-              "raw": "{{base_url}}/api/devices/{{deviceId}}",
-              "host": ["{{base_url}}"],
-              "path": ["api", "devices", "{{deviceId}}"]
-            },
-            "description": "Delete a device"
+            }
           }
         }
       ]
     },
     {
-      "name": "SMS Management",
+      "name": "Contact Management",
       "item": [
         {
-          "name": "Create SMS",
+          "name": "Create Contact",
           "request": {
             "method": "POST",
             "header": [
               {
-                "key": "Content-Type",
-                "value": "application/json"
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
               }
             ],
+            "url": {
+              "raw": "{{base_url}}/api/contacts",
+              "host": ["{{base_url}}"],
+              "path": ["api", "contacts"]
+            },
             "body": {
               "mode": "raw",
-              "raw": "{\n    \"deviceId\": \"device123\",\n    \"messageId\": \"msg123\",\n    \"sender\": \"+1234567890\",\n    \"receiver\": \"+0987654321\",\n    \"message\": \"Hello!\",\n    \"type\": \"incoming\",\n    \"status\": \"delivered\",\n    \"metadata\": {\n        \"contactName\": \"John Doe\",\n        \"isSpam\": false,\n        \"category\": \"personal\"\n    }\n}"
+              "raw": "{\n    \"deviceId\": \"device123\",\n    \"name\": \"John Smith\",\n    \"phoneNumbers\": [\"+1234567890\"],\n    \"emailAddresses\": [\"john@example.com\"],\n    \"contactId\": \"contact123\",\n    \"lastUpdated\": \"2024-03-21T10:00:00Z\",\n    \"isFavorite\": false,\n    \"hasPhoto\": true,\n    \"photoUri\": \"content://com.android.contacts/photo/123\",\n    \"notes\": \"School friend\",\n    \"groups\": [\"School\"]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Get Device Contacts",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/contacts/device/{{deviceId}}",
+              "host": ["{{base_url}}"],
+              "path": ["api", "contacts", "device", "{{deviceId}}"]
+            }
+          }
+        },
+        {
+          "name": "Search Contacts",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/contacts/device/{{deviceId}}/search?query=john",
+              "host": ["{{base_url}}"],
+              "path": ["api", "contacts", "device", "{{deviceId}}", "search"],
+              "query": [
+                {
+                  "key": "query",
+                  "value": "john"
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Location Tracking",
+      "item": [
+        {
+          "name": "Create Location Entry",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/locations",
+              "host": ["{{base_url}}"],
+              "path": ["api", "locations"]
             },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"deviceId\": \"device123\",\n    \"latitude\": 37.7749,\n    \"longitude\": -122.4194,\n    \"accuracy\": 10,\n    \"altitude\": 100,\n    \"speed\": 5,\n    \"heading\": 90,\n    \"timestamp\": \"2024-03-21T10:00:00Z\",\n    \"address\": \"123 Main St\",\n    \"isMoving\": true,\n    \"batteryLevel\": 85,\n    \"networkType\": \"4G\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Get Latest Location",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/locations/device/{{deviceId}}/latest",
+              "host": ["{{base_url}}"],
+              "path": ["api", "locations", "device", "{{deviceId}}", "latest"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Process Activity",
+      "item": [
+        {
+          "name": "Create Process Activity",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/process-activities",
+              "host": ["{{base_url}}"],
+              "path": ["api", "process-activities"]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"deviceId\": \"device123\",\n    \"processName\": \"com.example.app\",\n    \"packageName\": \"com.example.app\",\n    \"startTime\": \"2024-03-21T10:00:00Z\",\n    \"cpuUsage\": 5.2,\n    \"memoryUsage\": 150,\n    \"isActive\": true,\n    \"priority\": \"normal\",\n    \"userId\": 1000,\n    \"processId\": 1234,\n    \"parentProcessId\": 1000\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Get Active Processes",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/process-activities/device/{{deviceId}}/active",
+              "host": ["{{base_url}}"],
+              "path": ["api", "process-activities", "device", "{{deviceId}}", "active"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Application Monitoring",
+      "item": [
+        {
+          "name": "Create Application Entry",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/applications",
+              "host": ["{{base_url}}"],
+              "path": ["api", "applications"]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"deviceId\": \"device123\",\n    \"packageName\": \"com.example.app\",\n    \"appName\": \"Example App\",\n    \"startTime\": \"2024-03-21T10:00:00Z\",\n    \"isActive\": true,\n    \"lastUsed\": \"2024-03-21T10:00:00Z\",\n    \"usageCount\": 1,\n    \"category\": \"Social\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Get Active Applications",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/applications/device/{{deviceId}}/active",
+              "host": ["{{base_url}}"],
+              "path": ["api", "applications", "device", "{{deviceId}}", "active"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Notification Monitoring",
+      "item": [
+        {
+          "name": "Create Notification Entry",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/notifications",
+              "host": ["{{base_url}}"],
+              "path": ["api", "notifications"]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"deviceId\": \"device123\",\n    \"appPackageName\": \"com.example.app\",\n    \"appName\": \"Example App\",\n    \"title\": \"New Message\",\n    \"text\": \"You have a new message\",\n    \"timestamp\": \"2024-03-21T10:00:00Z\",\n    \"category\": \"message\",\n    \"priority\": \"high\",\n    \"isRead\": false,\n    \"isCleared\": false,\n    \"actions\": [\"Reply\", \"Delete\"],\n    \"extras\": {\n        \"sender\": \"John Doe\",\n        \"messageId\": \"msg123\"\n    }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Get Unread Notifications",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/notifications/device/{{deviceId}}/unread",
+              "host": ["{{base_url}}"],
+              "path": ["api", "notifications", "device", "{{deviceId}}", "unread"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "SMS Monitoring",
+      "item": [
+        {
+          "name": "Create SMS Entry",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
             "url": {
               "raw": "{{base_url}}/api/sms",
               "host": ["{{base_url}}"],
               "path": ["api", "sms"]
             },
-            "description": "Create a new SMS record"
-          }
-        },
-        {
-          "name": "Get Device SMS",
-          "request": {
-            "method": "GET",
-            "header": [
-              {
-                "key": "Authorization",
-                "value": "Bearer {{auth_token}}"
-              }
-            ],
-            "url": {
-              "raw": "{{base_url}}/api/sms/device/{{deviceId}}?startDate=2024-03-01&endDate=2024-03-31&type=incoming&page=1&limit=50",
-              "host": ["{{base_url}}"],
-              "path": ["api", "sms", "device", "{{deviceId}}"],
-              "query": [
-                {
-                  "key": "startDate",
-                  "value": "2024-03-01"
-                },
-                {
-                  "key": "endDate",
-                  "value": "2024-03-31"
-                },
-                {
-                  "key": "type",
-                  "value": "incoming"
-                },
-                {
-                  "key": "page",
-                  "value": "1"
-                },
-                {
-                  "key": "limit",
-                  "value": "50"
-                }
-              ]
-            },
-            "description": "Get SMS records for a specific device"
-          }
-        },
-        {
-          "name": "Get SMS Statistics",
-          "request": {
-            "method": "GET",
-            "header": [
-              {
-                "key": "Authorization",
-                "value": "Bearer {{auth_token}}"
-              }
-            ],
-            "url": {
-              "raw": "{{base_url}}/api/sms/device/{{deviceId}}/stats",
-              "host": ["{{base_url}}"],
-              "path": ["api", "sms", "device", "{{deviceId}}", "stats"]
-            },
-            "description": "Get SMS statistics for a device"
-          }
-        },
-        {
-          "name": "Update SMS",
-          "request": {
-            "method": "PUT",
-            "header": [
-              {
-                "key": "Authorization",
-                "value": "Bearer {{auth_token}}"
-              },
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              }
-            ],
             "body": {
               "mode": "raw",
-              "raw": "{\n    \"status\": \"read\",\n    \"isBlocked\": true\n}"
-            },
-            "url": {
-              "raw": "{{base_url}}/api/sms/{{smsId}}",
-              "host": ["{{base_url}}"],
-              "path": ["api", "sms", "{{smsId}}"]
-            },
-            "description": "Update an SMS record"
+              "raw": "{\n    \"deviceId\": \"device123\",\n    \"type\": \"received\",\n    \"address\": \"+1234567890\",\n    \"body\": \"Hello, how are you?\",\n    \"timestamp\": \"2024-03-21T10:00:00Z\",\n    \"read\": false,\n    \"threadId\": \"thread123\",\n    \"contactName\": \"John Smith\",\n    \"serviceCenter\": \"+1987654321\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
           }
         },
         {
-          "name": "Delete SMS",
+          "name": "Get SMS History",
           "request": {
-            "method": "DELETE",
+            "method": "GET",
             "header": [
               {
                 "key": "Authorization",
-                "value": "Bearer {{auth_token}}"
+                "value": "Bearer {{token}}"
               }
             ],
             "url": {
-              "raw": "{{base_url}}/api/sms/{{smsId}}",
+              "raw": "{{base_url}}/api/sms/device/{{deviceId}}/history",
               "host": ["{{base_url}}"],
-              "path": ["api", "sms", "{{smsId}}"]
-            },
-            "description": "Delete an SMS record"
+              "path": ["api", "sms", "device", "{{deviceId}}", "history"]
+            }
           }
         }
       ]
     },
     {
-      "name": "Call Management",
+      "name": "Call Monitoring",
       "item": [
         {
-          "name": "Create Call",
+          "name": "Create Call Entry",
           "request": {
             "method": "POST",
             "header": [
               {
-                "key": "Content-Type",
-                "value": "application/json"
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
               }
             ],
-            "body": {
-              "mode": "raw",
-              "raw": "{\n    \"deviceId\": \"device123\",\n    \"callId\": \"call123\",\n    \"caller\": \"+1234567890\",\n    \"receiver\": \"+0987654321\",\n    \"duration\": 120,\n    \"type\": \"incoming\",\n    \"status\": \"completed\",\n    \"metadata\": {\n        \"contactName\": \"John Doe\",\n        \"isSpam\": false,\n        \"category\": \"personal\",\n        \"location\": {\n            \"latitude\": 37.7749,\n            \"longitude\": -122.4194,\n            \"address\": \"San Francisco, CA\"\n        },\n        \"recordingUrl\": \"https://example.com/recordings/call123.mp3\"\n    }\n}"
-            },
             "url": {
               "raw": "{{base_url}}/api/calls",
               "host": ["{{base_url}}"],
               "path": ["api", "calls"]
             },
-            "description": "Create a new call record"
-          }
-        },
-        {
-          "name": "Get Device Calls",
-          "request": {
-            "method": "GET",
-            "header": [
-              {
-                "key": "Authorization",
-                "value": "Bearer {{auth_token}}"
-              }
-            ],
-            "url": {
-              "raw": "{{base_url}}/api/calls/device/{{deviceId}}?startDate=2024-03-01&endDate=2024-03-31&type=incoming&status=completed&page=1&limit=50",
-              "host": ["{{base_url}}"],
-              "path": ["api", "calls", "device", "{{deviceId}}"],
-              "query": [
-                {
-                  "key": "startDate",
-                  "value": "2024-03-01"
-                },
-                {
-                  "key": "endDate",
-                  "value": "2024-03-31"
-                },
-                {
-                  "key": "type",
-                  "value": "incoming"
-                },
-                {
-                  "key": "status",
-                  "value": "completed"
-                },
-                {
-                  "key": "page",
-                  "value": "1"
-                },
-                {
-                  "key": "limit",
-                  "value": "50"
-                }
-              ]
-            },
-            "description": "Get call records for a specific device"
-          }
-        },
-        {
-          "name": "Get Call Statistics",
-          "request": {
-            "method": "GET",
-            "header": [
-              {
-                "key": "Authorization",
-                "value": "Bearer {{auth_token}}"
-              }
-            ],
-            "url": {
-              "raw": "{{base_url}}/api/calls/device/{{deviceId}}/stats",
-              "host": ["{{base_url}}"],
-              "path": ["api", "calls", "device", "{{deviceId}}", "stats"]
-            },
-            "description": "Get call statistics for a device"
-          }
-        },
-        {
-          "name": "Update Call",
-          "request": {
-            "method": "PUT",
-            "header": [
-              {
-                "key": "Authorization",
-                "value": "Bearer {{auth_token}}"
-              },
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              }
-            ],
             "body": {
               "mode": "raw",
-              "raw": "{\n    \"status\": \"blocked\",\n    \"isBlocked\": true,\n    \"duration\": 180\n}"
-            },
-            "url": {
-              "raw": "{{base_url}}/api/calls/{{callId}}",
-              "host": ["{{base_url}}"],
-              "path": ["api", "calls", "{{callId}}"]
-            },
-            "description": "Update a call record"
+              "raw": "{\n    \"deviceId\": \"device123\",\n    \"type\": \"outgoing\",\n    \"number\": \"+1234567890\",\n    \"duration\": 120,\n    \"timestamp\": \"2024-03-21T10:00:00Z\",\n    \"contactName\": \"John Smith\",\n    \"isRead\": false,\n    \"isBlocked\": false,\n    \"simSlot\": 0\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
           }
         },
         {
-          "name": "Delete Call",
+          "name": "Get Call History",
           "request": {
-            "method": "DELETE",
+            "method": "GET",
             "header": [
               {
                 "key": "Authorization",
-                "value": "Bearer {{auth_token}}"
+                "value": "Bearer {{token}}"
               }
             ],
             "url": {
-              "raw": "{{base_url}}/api/calls/{{callId}}",
+              "raw": "{{base_url}}/api/calls/device/{{deviceId}}/history",
               "host": ["{{base_url}}"],
-              "path": ["api", "calls", "{{callId}}"]
-            },
-            "description": "Delete a call record"
+              "path": ["api", "calls", "device", "{{deviceId}}", "history"]
+            }
           }
         }
       ]
@@ -453,28 +463,15 @@
   "variable": [
     {
       "key": "base_url",
-      "value": "http://localhost:3000",
-      "type": "string"
+      "value": "http://localhost:3000"
     },
     {
-      "key": "auth_token",
-      "value": "your_jwt_token_here",
-      "type": "string"
+      "key": "token",
+      "value": "your_jwt_token_here"
     },
     {
       "key": "deviceId",
-      "value": "your_device_id",
-      "type": "string"
-    },
-    {
-      "key": "smsId",
-      "value": "your_sms_id",
-      "type": "string"
-    },
-    {
-      "key": "callId",
-      "value": "your_call_id",
-      "type": "string"
+      "value": "device123"
     }
   ]
 } 
