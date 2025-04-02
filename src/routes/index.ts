@@ -4,6 +4,8 @@ import authRoutes from './auth.routes';
 import smsRoutes from './sms.routes';
 import callRoutes from './call.routes';
 import applicationRoutes from './application.routes';
+import notificationRoutes from './notification.routes';
+
 
 const router = express.Router();
 
@@ -21,5 +23,9 @@ router.use('/calls', callRoutes);
 
 // Application routes
 router.use('/applications', applicationRoutes);
+
+// Notification routes
+router.use('/notifications', notificationRoutes);
+
 
 export default router; 
