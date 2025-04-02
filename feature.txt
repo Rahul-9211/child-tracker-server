@@ -1,0 +1,8 @@
+DeviceInfo
+SMS Manager
+Call Manager
+Contact Manager
+Application Manager
+GPS Manager
+Process Activity
+Notification Monitoring

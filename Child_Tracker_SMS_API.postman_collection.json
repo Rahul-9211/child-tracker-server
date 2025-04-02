@@ -1,0 +1,155 @@
+{
+  "info": {
+    "name": "Child Tracker SMS API",
+    "description": "Collection of API endpoints for the SMS Manager feature",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Create SMS",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"deviceId\": \"device123\",\n    \"messageId\": \"msg123\",\n    \"sender\": \"+1234567890\",\n    \"receiver\": \"+0987654321\",\n    \"message\": \"Hello!\",\n    \"type\": \"incoming\",\n    \"status\": \"delivered\",\n    \"metadata\": {\n        \"contactName\": \"John Doe\",\n        \"isSpam\": false,\n        \"category\": \"personal\"\n    }\n}"
+        },
+        "url": {
+          "raw": "{{base_url}}/api/sms",
+          "host": ["{{base_url}}"],
+          "path": ["api", "sms"]
+        },
+        "description": "Create a new SMS record"
+      }
+    },
+    {
+      "name": "Get Device SMS",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{auth_token}}"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/api/sms/device/{{deviceId}}?startDate=2024-03-01&endDate=2024-03-31&type=incoming&page=1&limit=50",
+          "host": ["{{base_url}}"],
+          "path": ["api", "sms", "device", "{{deviceId}}"],
+          "query": [
+            {
+              "key": "startDate",
+              "value": "2024-03-01"
+            },
+            {
+              "key": "endDate",
+              "value": "2024-03-31"
+            },
+            {
+              "key": "type",
+              "value": "incoming"
+            },
+            {
+              "key": "page",
+              "value": "1"
+            },
+            {
+              "key": "limit",
+              "value": "50"
+            }
+          ]
+        },
+        "description": "Get SMS records for a specific device with optional filters"
+      }
+    },
+    {
+      "name": "Get SMS Statistics",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{auth_token}}"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/api/sms/device/{{deviceId}}/stats",
+          "host": ["{{base_url}}"],
+          "path": ["api", "sms", "device", "{{deviceId}}", "stats"]
+        },
+        "description": "Get SMS statistics for a specific device"
+      }
+    },
+    {
+      "name": "Update SMS",
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{auth_token}}"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"status\": \"read\",\n    \"isBlocked\": true\n}"
+        },
+        "url": {
+          "raw": "{{base_url}}/api/sms/{{smsId}}",
+          "host": ["{{base_url}}"],
+          "path": ["api", "sms", "{{smsId}}"]
+        },
+        "description": "Update an SMS record (e.g., mark as read, block)"
+      }
+    },
+    {
+      "name": "Delete SMS",
+      "request": {
+        "method": "DELETE",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{auth_token}}"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/api/sms/{{smsId}}",
+          "host": ["{{base_url}}"],
+          "path": ["api", "sms", "{{smsId}}"]
+        },
+        "description": "Delete an SMS record"
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://localhost:3000",
+      "type": "string"
+    },
+    {
+      "key": "auth_token",
+      "value": "your_jwt_token_here",
+      "type": "string"
+    },
+    {
+      "key": "deviceId",
+      "value": "your_device_id",
+      "type": "string"
+    },
+    {
+      "key": "smsId",
+      "value": "your_sms_id",
+      "type": "string"
+    }
+  ]
+} 
