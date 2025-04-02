@@ -2,6 +2,7 @@ import express from 'express';
 import deviceRoutes from './device.routes';
 import authRoutes from './auth.routes';
 import smsRoutes from './sms.routes';
+import notificationRoutes from './notification.routes';
 
 const router = express.Router();
 
@@ -13,5 +14,8 @@ router.use('/devices', deviceRoutes);
 
 // SMS routes
 router.use('/sms', smsRoutes);
+
+// Notification routes
+router.use('/notifications', notificationRoutes);
 
 export default router; 
