@@ -9,6 +9,7 @@ import locationRoutes from './location.routes';
 import callRoutes from './call.routes';
 import applicationRoutes from './application.routes';
 import notificationRoutes from './notification.routes';
+import processActivityRoutes from './process-activity.routes';
 
 
 
@@ -37,6 +38,9 @@ router.use('/applications', applicationRoutes);
 
 // Notification routes
 router.use('/notifications', notificationRoutes);
+
+// Process Activity routes
+router.use('/process-activities', processActivityRoutes);
 
 
 
