@@ -6,3 +6,22 @@ Application Manager
 GPS Manager
 Process Activity
 Notification Monitoring
+
+
+test creds : 
+signin
+{
+    "email" : "rahul.rawat.fec@gmail.com",
+    "password" : "rahul"
+}
+
+
+SingUp 
+{
+    "name" : "rahul", 
+    "email" : "rahul.rawat.fec@gmail.com",
+    "password" : "rahul",
+    "role" : "super_admin",
+    "deviceId" : "",
+    "superAdminKey":"your-secret-access-code-123"
+}

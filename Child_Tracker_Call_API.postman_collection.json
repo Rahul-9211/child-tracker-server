@@ -1,0 +1,159 @@
+{
+  "info": {
+    "name": "Child Tracker Call API",
+    "description": "Collection of API endpoints for the Call Manager feature",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Create Call",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"deviceId\": \"device123\",\n    \"callId\": \"call123\",\n    \"caller\": \"+1234567890\",\n    \"receiver\": \"+0987654321\",\n    \"duration\": 120,\n    \"type\": \"incoming\",\n    \"status\": \"completed\",\n    \"metadata\": {\n        \"contactName\": \"John Doe\",\n        \"isSpam\": false,\n        \"category\": \"personal\",\n        \"location\": {\n            \"latitude\": 37.7749,\n            \"longitude\": -122.4194,\n            \"address\": \"San Francisco, CA\"\n        },\n        \"recordingUrl\": \"https://example.com/recordings/call123.mp3\"\n    }\n}"
+        },
+        "url": {
+          "raw": "{{base_url}}/api/calls",
+          "host": ["{{base_url}}"],
+          "path": ["api", "calls"]
+        },
+        "description": "Create a new call record"
+      }
+    },
+    {
+      "name": "Get Device Calls",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{auth_token}}"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/api/calls/device/{{deviceId}}?startDate=2024-03-01&endDate=2024-03-31&type=incoming&status=completed&page=1&limit=50",
+          "host": ["{{base_url}}"],
+          "path": ["api", "calls", "device", "{{deviceId}}"],
+          "query": [
+            {
+              "key": "startDate",
+              "value": "2024-03-01"
+            },
+            {
+              "key": "endDate",
+              "value": "2024-03-31"
+            },
+            {
+              "key": "type",
+              "value": "incoming"
+            },
+            {
+              "key": "status",
+              "value": "completed"
+            },
+            {
+              "key": "page",
+              "value": "1"
+            },
+            {
+              "key": "limit",
+              "value": "50"
+            }
+          ]
+        },
+        "description": "Get call records for a specific device with optional filters"
+      }
+    },
+    {
+      "name": "Get Call Statistics",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{auth_token}}"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/api/calls/device/{{deviceId}}/stats",
+          "host": ["{{base_url}}"],
+          "path": ["api", "calls", "device", "{{deviceId}}", "stats"]
+        },
+        "description": "Get call statistics for a specific device"
+      }
+    },
+    {
+      "name": "Update Call",
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{auth_token}}"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"status\": \"blocked\",\n    \"isBlocked\": true,\n    \"duration\": 180\n}"
+        },
+        "url": {
+          "raw": "{{base_url}}/api/calls/{{callId}}",
+          "host": ["{{base_url}}"],
+          "path": ["api", "calls", "{{callId}}"]
+        },
+        "description": "Update a call record (e.g., mark as blocked, update duration)"
+      }
+    },
+    {
+      "name": "Delete Call",
+      "request": {
+        "method": "DELETE",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{auth_token}}"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/api/calls/{{callId}}",
+          "host": ["{{base_url}}"],
+          "path": ["api", "calls", "{{callId}}"]
+        },
+        "description": "Delete a call record"
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://localhost:3000",
+      "type": "string"
+    },
+    {
+      "key": "auth_token",
+      "value": "your_jwt_token_here",
+      "type": "string"
+    },
+    {
+      "key": "deviceId",
+      "value": "your_device_id",
+      "type": "string"
+    },
+    {
+      "key": "callId",
+      "value": "your_call_id",
+      "type": "string"
+    }
+  ]
+} 
