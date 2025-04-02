@@ -3,6 +3,7 @@ import deviceRoutes from './device.routes';
 import authRoutes from './auth.routes';
 import smsRoutes from './sms.routes';
 import callRoutes from './call.routes';
+import applicationRoutes from './application.routes';
 
 const router = express.Router();
 
@@ -17,5 +18,8 @@ router.use('/sms', smsRoutes);
 
 // Call routes
 router.use('/calls', callRoutes);
+
+// Application routes
+router.use('/applications', applicationRoutes);
 
 export default router; 
