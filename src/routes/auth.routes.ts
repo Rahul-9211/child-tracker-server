@@ -7,6 +7,8 @@ const router = express.Router();
 // Public routes
 router.post('/signup', AuthController.signup);
 router.post('/signin', AuthController.signin);
+router.post('/forgot-password', AuthController.forgotPassword);
+router.post('/reset-password', AuthController.resetPassword);
 
 // Protected routes
 router.post('/add-device', auth, AuthController.addDeviceToUser);

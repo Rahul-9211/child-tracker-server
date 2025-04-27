@@ -8,6 +8,7 @@ import Device from '../models/device.model';
 import { AuthRequest } from '../middleware/auth.middleware';
 import dotenv from 'dotenv';
 import { SignupRequestBody } from '../utils/types/ISignUp';
+import nodemailer from 'nodemailer';
 dotenv.config();
 
 // Helper function to log auth activities
@@ -203,6 +204,97 @@ export const addDeviceToUser = async (req: AuthRequest, res: Response) => {
     });
   } catch (error) {
     res.status(500).json({ message: 'Error adding device', error });
+  }
+};
+
+// Forgot Password
+export const forgotPassword = async (req: Request, res: Response) => {
+  try {
+    const { email } = req.body;
+
+    // Find user by email
+    const user = await User.findOne({ email });
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    // Generate reset token
+    const resetToken = jwt.sign(
+      { userId: user._id },
+      process.env.JWT_SECRET || 'your-secret-key',
+      { expiresIn: '1h' }
+    );
+
+    // Save reset token to user
+    user.resetPasswordToken = resetToken;
+    user.resetPasswordExpires = new Date(Date.now() + 3600000); // 1 hour
+    await user.save();
+
+    // Create email transporter
+    const transporter = nodemailer.createTransport({
+      service: 'gmail',
+      auth: {
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASS
+      }
+    });
+
+    // Email content
+    const resetUrl = `${process.env.FRONTEND_URL}/reset-password?token=${resetToken}`;
+    const mailOptions = {
+      from: process.env.EMAIL_USER,
+      to: user.email,
+      subject: 'Password Reset Request',
+      html: `
+        <h1>Password Reset Request</h1>
+        <p>You requested a password reset for your account.</p>
+        <p>Click this link to reset your password:</p>
+        <a href="${resetUrl}">Reset Password</a>
+        <p>This link will expire in 1 hour.</p>
+        <p>If you didn't request this, please ignore this email.</p>
+      `
+    };
+
+    // Send email
+    await transporter.sendMail(mailOptions);
+
+    res.status(200).json({ message: 'Password reset email sent' });
+  } catch (error) {
+    res.status(500).json({ message: 'Error processing forgot password request', error });
+  }
+};
+
+// Reset Password
+export const resetPassword = async (req: Request, res: Response) => {
+  try {
+    const { token, newPassword } = req.body;
+
+    // Verify token
+    const decoded = jwt.verify(token, process.env.JWT_SECRET || 'your-secret-key') as { userId: string };
+    
+    // Find user
+    const user = await User.findOne({
+      _id: decoded.userId,
+      resetPasswordToken: token,
+      resetPasswordExpires: { $gt: new Date() }
+    });
+
+    if (!user) {
+      return res.status(400).json({ message: 'Invalid or expired reset token' });
+    }
+
+    // Hash new password
+    const hashedPassword = await bcrypt.hash(newPassword, 10);
+
+    // Update password and clear reset token
+    user.password = hashedPassword;
+    user.resetPasswordToken = undefined;
+    user.resetPasswordExpires = undefined;
+    await user.save();
+
+    res.status(200).json({ message: 'Password reset successful' });
+  } catch (error) {
+    res.status(500).json({ message: 'Error resetting password', error });
   }
 };
  

@@ -6,6 +6,8 @@ export interface IUser extends Document {
   password: string;
   role: 'super_admin' | 'admin' | 'user';
   allowedDevices?: string[]; // Array of device IDs for admin
+  resetPasswordToken?: string;
+  resetPasswordExpires?: Date;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -33,7 +35,13 @@ const UserSchema = new Schema({
   allowedDevices: [{
     type: String, // Store device IDs that admin can access
     ref: 'Device'
-  }]
+  }],
+  resetPasswordToken: {
+    type: String
+  },
+  resetPasswordExpires: {
+    type: Date
+  }
 }, {
   timestamps: true
 });
