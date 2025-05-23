@@ -19,11 +19,7 @@ export const getLatestLocation = async (req: Request, res: Response) => {
     const location = await Location.findOne({ deviceId })
       .sort({ timestamp: -1 });
     
-    if (!location) {
-      return res.status(404).json({ message: 'No location data found for device' });
-    }
-    
-    res.json(location);
+    res.json(location || []);
   } catch (error) {
     res.status(500).json({ message: 'Error fetching latest location', error });
   }
@@ -48,7 +44,7 @@ export const getLocationHistory = async (req: Request, res: Response) => {
       .sort({ timestamp: -1 })
       .limit(Number(limit));
 
-    res.json(locations);
+    res.json(locations || []);
   } catch (error) {
     res.status(500).json({ message: 'Error fetching location history', error });
   }
